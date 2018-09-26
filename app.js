@@ -1,4 +1,8 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { 
+  ApolloServer, 
+  gql,
+  UserInputError
+} = require('apollo-server');
 
 const db = require('./lib/db');
 const postApi = require('./api/post.api');
@@ -27,7 +31,12 @@ const resolvers = {
 
   Mutation: {
     async createPost(roo, args) {
-      return await postApi.createPost(args);
+      try {
+        return await postApi.createPost(args);
+      } catch(err) {
+        throw new UserInputError('All fields are required');
+      }
+      
     }
   }
 };

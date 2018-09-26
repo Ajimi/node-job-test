@@ -7,7 +7,7 @@ module.exports = {
       return await Post.create(args);
     } catch(err) {
       console.log(err);
-      return {};
+      throw err;
     }
   }
 
