@@ -5,7 +5,7 @@
 
  1. clone or download the repository
  2. install required dependencies by running: `npm install`
- 3. launch MySQL server and create your database
+ 3. launch MySQL server and create your database ( note: tables will be created automatically by sequelize )
  4. Override project configuration inside config/server.config.js:
  
  
