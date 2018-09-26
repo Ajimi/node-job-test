@@ -1,48 +1,42 @@
 const { ApolloServer, gql } = require('apollo-server');
 
-const config = require('./config');
 const db = require('./lib/db');
-
-const books = [
-  {
-    title: 'Harry Potter and the Chamber of Secrets',
-    author: 'J.K. Rowling',
-  },
-  {
-    title: 'Jurassic Park',
-    author: 'Michael Crichton',
-  },
-];
+const postApi = require('./api/post.api');
 
 const typeDefs = gql`
-  # Comments in GraphQL are defined with the hash (#) symbol.
-
-  # This "Book" type can be used in other type declarations.
-  type Book {
+  type Post {
+    id: ID
     title: String
     author: String
+    content: String
   }
 
-  # The "Query" type is the root of all GraphQL queries.
-  # (A "Mutation" type will be covered later on.)
   type Query {
-    books: [Book]
+    posts: [Post]
+  }
+
+  type Mutation {
+    createPost(title: String, content:String, author: String): Post
   }
 `;
 
-// Resolvers define the technique for fetching the types in the
-// schema.  We'll retrieve books from the "books" array above.
 const resolvers = {
   Query: {
-    books: () => books,
+    posts: () => [],
   },
+
+  Mutation: {
+    async createPost(roo, args) {
+      return await postApi.createPost(args);
+    }
+  }
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
-
 const start = async () => {
-  await db.connect(config.server.database);
+  const server = new ApolloServer({ typeDefs, resolvers });
+  
   try {
+    await db.verifyConnection();
     const { url } = await server.listen();
     console.log(`🚀  Server ready at ${url}`);
   } catch(err) {
