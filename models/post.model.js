@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 const { getDB } = require('../lib/db');
 
 const Post = getDB().define('post', {
