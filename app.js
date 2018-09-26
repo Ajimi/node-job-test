@@ -44,7 +44,7 @@ const resolvers = {
   },
 
   Mutation: {
-    async createPost(roo, args) {
+    async createPost(root, args) {
       try {
         return await postApi.createPost(args);
       } catch(err) {
