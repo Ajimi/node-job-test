@@ -20,6 +20,15 @@ module.exports = {
       console.log(err);
       throw err;
     }
+  },
+
+  async getPost(id) {
+    try {
+      return await Post.findById(id);
+    } catch(err) {
+      console.log(err);
+      throw err;
+    }
   }
 
-}
+};

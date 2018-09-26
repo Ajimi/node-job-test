@@ -36,9 +36,9 @@ const typeDefs = gql`
 
   type Query {
     posts: [Post]
-    post: Post
+    post(id: ID): Post
   }
-
+ 
   type Mutation {
     createPost(title: String, content:String, userId: ID): Post
     commentPost(description: String, postId: ID, userId: ID): Comment
@@ -53,7 +53,15 @@ const resolvers = {
       } catch(err) {
         throw new ApolloError('Server error');
       } 
-    }
+    },
+
+    async post(root, args) {
+      try {
+        return await postApi.getPost(args.id);
+      } catch(err) {
+        throw new ApolloError('Server error');
+      } 
+    },
   },
 
   Post: {
