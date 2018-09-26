@@ -12,6 +12,6 @@ module.exports = () => {
 
   User.sync();
   Post.sync(); 
-  Comment.sync({force: true}); 
+  Comment.sync(); 
 }
  

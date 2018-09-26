@@ -10,6 +10,7 @@ const associations = require('./models/associations');
 
 const postApi = require('./api/post.api');
 const commentsApi = require('./api/comment.api');
+const userApi = require('./api/user.api');
 
 const typeDefs = gql`
   type Post {
@@ -35,6 +36,7 @@ const typeDefs = gql`
 
   type Query {
     posts: [Post]
+    post: Post
   }
 
   type Mutation {
@@ -47,11 +49,38 @@ const resolvers = {
   Query: {
     async posts() {
       try {
-        const posts = await postApi.getPosts();
-        return posts;
+        return await postApi.getPosts();
+      } catch(err) {
+        throw new ApolloError('Server error');
+      } 
+    }
+  },
+
+  Post: {
+    async user(root) {
+      try {
+        return await userApi.getUser(root.userId);        
+      } catch(err) {
+        throw new ApolloError('Server error');
+      } 
+    },
+
+    async comments(root) {
+      try {
+        return await commentsApi.getComments(root.id);
       } catch(err) {
         throw new ApolloError('Server error');
       }
+    }
+  },
+
+  Comment: {
+    async user(root) {
+      try {
+        return await userApi.getUser(root.userId);        
+      } catch(err) {
+        throw new ApolloError('Server error');
+      } 
     }
   },
 

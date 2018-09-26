@@ -6,12 +6,7 @@ module.exports = {
   async createPost(args) {
     try {
       const user = await User.findById(args.userId);
-      const post =  await Post.create(args);
-      
-      return {
-        ...post.get(),
-        user
-      };
+      return await Post.create(args);
     } catch(err) {
       console.log(err);
       throw err;
@@ -20,7 +15,7 @@ module.exports = {
 
   async getPosts() {
     try {
-      return await Post.all({include: 'user'});
+      return await Post.all();
     } catch(err) {
       console.log(err);
       throw err;
