@@ -8,11 +8,10 @@ module.exports = {
     } catch(err) {
       console.log(err);
       throw err;
-    }
+    } 
   },
 
   async getComments(postId) {
-    console.log(postId)
     try {
       return await Comment.findAll({ where: { postId: postId } });
     } catch(err) {
