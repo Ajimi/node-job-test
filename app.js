@@ -6,6 +6,7 @@ const {
 } = require('apollo-server');
 
 const db = require('./lib/db');
+const associations = require('./models/associations');
 const postApi = require('./api/post.api');
 
 const typeDefs = gql`
@@ -14,6 +15,7 @@ const typeDefs = gql`
     title: String
     user: User
     content: String
+    comments: [Comment]
   }
 
   type User {
@@ -22,12 +24,19 @@ const typeDefs = gql`
     posts: [Post]
   }
 
+  type Comment {
+    id: ID
+    content: String
+    post: Post
+  }
+
   type Query {
     posts: [Post]
   }
 
   type Mutation {
     createPost(title: String, content:String, userId: ID): Post
+    commentPost(content: String, postId: ID, userId: ID): Comment
   }
 `;
 
@@ -57,7 +66,10 @@ const resolvers = {
 
 const start = async () => {
   const server = new ApolloServer({ typeDefs, resolvers });
-  
+
+  // setup database associations
+  associations();
+
   try {
     await db.verifyConnection();
     const { url } = await server.listen();

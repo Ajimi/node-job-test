@@ -8,15 +8,13 @@ const User = getDB().define('user', {
   }
 });
 
-User.sync();
-
-// seed users
-User.findById(1).then(user => {
-  if (!user) {
-    User.create({
-      name: 'amenallah'
-    });
-  }
-})
+// // seed users
+// User.findById(1).then(user => {
+//   if (!user) {
+//     User.create({
+//       name: 'amenallah'
+//     });
+//   }
+// })
 
 module.exports = User;
