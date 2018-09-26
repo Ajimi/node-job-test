@@ -1,7 +1,8 @@
 const { 
   ApolloServer, 
   gql,
-  UserInputError
+  UserInputError,
+  ApolloError
 } = require('apollo-server');
 
 const db = require('./lib/db');
@@ -32,7 +33,14 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    posts: () => [],
+    async posts() {
+      try {
+        const posts = await postApi.getPosts();
+        return posts;
+      } catch(err) {
+        throw new ApolloError('Server error');
+      }
+    }
   },
 
   Mutation: {

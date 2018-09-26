@@ -16,6 +16,15 @@ module.exports = {
       console.log(err);
       throw err;
     }
+  },
+
+  async getPosts() {
+    try {
+      return await Post.all({include: 'user'});
+    } catch(err) {
+      console.log(err);
+      throw err;
+    }
   }
 
 }
