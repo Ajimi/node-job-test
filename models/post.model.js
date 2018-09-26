@@ -8,10 +8,10 @@ const Post = getDB().define('post', {
     allowNull: false
   },
   content: Sequelize.TEXT  
-});
+}); 
 
 Post.belongsTo(User);
 
 Post.sync(); 
 
-module.exports = Post;
+module.exports = Post; 
