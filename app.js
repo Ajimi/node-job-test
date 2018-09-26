@@ -6,7 +6,10 @@ const {
 } = require('apollo-server');
 
 const db = require('./lib/db');
+const associations = require('./models/associations');
+
 const postApi = require('./api/post.api');
+const commentsApi = require('./api/comment.api');
 
 const typeDefs = gql`
   type Post {
@@ -14,6 +17,7 @@ const typeDefs = gql`
     title: String
     user: User
     content: String
+    comments: [Comment]
   }
 
   type User {
@@ -22,12 +26,20 @@ const typeDefs = gql`
     posts: [Post]
   }
 
+  type Comment {
+    id: ID
+    description: String
+    post: Post
+    user: User
+  }
+
   type Query {
     posts: [Post]
   }
 
   type Mutation {
     createPost(title: String, content:String, userId: ID): Post
+    commentPost(description: String, postId: ID, userId: ID): Comment
   }
 `;
 
@@ -44,20 +56,30 @@ const resolvers = {
   },
 
   Mutation: {
-    async createPost(roo, args) {
+    async createPost(root, args) {
       try {
         return await postApi.createPost(args);
       } catch(err) {
         throw new UserInputError('All fields are required');
+      }      
+    },
+
+    async commentPost(root, args) {
+      try {
+        return await commentsApi.createComment(args);
+      } catch(err) {
+        throw new UserInputError('All fields are required');
       }
-      
     }
   }
 };
 
 const start = async () => {
   const server = new ApolloServer({ typeDefs, resolvers });
-  
+
+  // setup database associations
+  associations();
+
   try {
     await db.verifyConnection();
     const { url } = await server.listen();
