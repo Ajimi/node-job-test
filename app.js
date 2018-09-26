@@ -11,8 +11,14 @@ const typeDefs = gql`
   type Post {
     id: ID
     title: String
-    author: String
+    user: User
     content: String
+  }
+
+  type User {
+    id: ID
+    name: String
+    posts: [Post]
   }
 
   type Query {
@@ -20,7 +26,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createPost(title: String, content:String, author: String): Post
+    createPost(title: String, content:String, userId: ID): Post
   }
 `;
 

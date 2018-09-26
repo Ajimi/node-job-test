@@ -1,15 +1,17 @@
 const Sequelize = require('sequelize');
 const { getDB } = require('../lib/db');
+const User =  require('./user.model');
 
 const Post = getDB().define('post', {
   title: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  content: Sequelize.TEXT,
-  author: Sequelize.STRING
+  content: Sequelize.TEXT  
 });
 
-Post.sync({force: true});
+Post.belongsTo(User);
+
+Post.sync(); 
 
 module.exports = Post;
