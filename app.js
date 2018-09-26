@@ -7,7 +7,9 @@ const {
 
 const db = require('./lib/db');
 const associations = require('./models/associations');
+
 const postApi = require('./api/post.api');
+const commentsApi = require('./api/comment.api');
 
 const typeDefs = gql`
   type Post {
@@ -26,8 +28,9 @@ const typeDefs = gql`
 
   type Comment {
     id: ID
-    content: String
+    description: String
     post: Post
+    user: User
   }
 
   type Query {
@@ -36,7 +39,7 @@ const typeDefs = gql`
 
   type Mutation {
     createPost(title: String, content:String, userId: ID): Post
-    commentPost(content: String, postId: ID, userId: ID): Comment
+    commentPost(description: String, postId: ID, userId: ID): Comment
   }
 `;
 
@@ -58,8 +61,15 @@ const resolvers = {
         return await postApi.createPost(args);
       } catch(err) {
         throw new UserInputError('All fields are required');
+      }      
+    },
+
+    async commentPost(root, args) {
+      try {
+        return await commentsApi.createComment(args);
+      } catch(err) {
+        throw new UserInputError('All fields are required');
       }
-      
     }
   }
 };
