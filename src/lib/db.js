@@ -1,9 +1,9 @@
-const Sequelize = require('sequelize');
-const config = require('../config');
+import Sequelize from 'sequelize';
+import config from '../config';
 
 let sequelize = null;
 
-const getDB = () => {
+export const getDB = () => {
   if (sequelize)
     return sequelize;
 
@@ -26,9 +26,9 @@ const getDB = () => {
   });
 
   return sequelize;
-}
+};
 
-const verifyConnection = () => {
+export const verifyConnection = () => {
   if(!sequelize) getDB();
 
 
@@ -38,9 +38,4 @@ const verifyConnection = () => {
       console.error('Unable to connect to the database:', err);
       throw err;
     });
-}
-
-module.exports = {
-  getDB,
-  verifyConnection
 };

@@ -1,12 +1,12 @@
-const Sequelize = require('sequelize');
-const { getDB } = require('../lib/db');
+import Sequelize from 'sequelize';
+import { getDB } from '../lib/db';
 
 const Post = getDB().define('post', {
   title: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  content: Sequelize.TEXT  
-}); 
+  content: Sequelize.TEXT
+});
 
-module.exports = Post;  
+export default Post;

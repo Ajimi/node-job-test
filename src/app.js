@@ -3,7 +3,7 @@ import {
   gql
 } from 'apollo-server';
 
-import db from './lib/db';
+import { verifyConnection } from './lib/db';
 import associations from './models/associations';
 
 import postApi from './api/post.api';
@@ -73,7 +73,7 @@ const start = () => {
   // setup database associations
   associations();
 
-  db.verifyConnection()
+  verifyConnection()
     .then(() => server.listen())
     .then(({ url }) => console.log(`🚀  Server ready at ${url}`))
     .catch(err => console.log('error starting server: ', err));
