@@ -14,11 +14,11 @@ export default {
   },
 
   getPosts() {
-    return Post.all();
+    return Post.all({include: ['user', 'comments']});
   },
 
   getPost(id) {
-    return Post.findById(id);
+    return Post.findById(id, {include: ['user', 'comments']});
   }
 
 };

@@ -50,11 +50,6 @@ const resolvers = {
     post: (root, args) => postApi.getPost(args.id)
   },
 
-  Comment: {
-    user(root) {
-      return userApi.getUser(root.userId);
-    }
-  },
 
   Mutation: {
     createPost(root, args) {
