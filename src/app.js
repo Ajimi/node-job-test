@@ -1,14 +1,14 @@
-const {
+import {
   ApolloServer,
   gql
-} = require('apollo-server');
+} from 'apollo-server';
 
-const db = require('./lib/db');
-const associations = require('./models/associations');
+import db from './lib/db';
+import associations from './models/associations';
 
-const postApi = require('./api/post.api');
-const commentsApi = require('./api/comment.api');
-const userApi = require('./api/user.api');
+import postApi from './api/post.api';
+import commentsApi from './api/comment.api';
+import userApi from './api/user.api';
 
 const typeDefs = gql`
   type Post {

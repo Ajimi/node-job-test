@@ -19,6 +19,6 @@ const config = {
       password: env.DATABASE_PASSWORD,
     }
   }
-}
+};
 
-module.exports = config[nodeEnv];
+export default config[nodeEnv];
