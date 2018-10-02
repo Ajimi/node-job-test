@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 import { getDB } from '../lib/db';
-console.log(getDB);
+
 const User = getDB().define('user', {
   name: {
     type: Sequelize.STRING,

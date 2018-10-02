@@ -1,34 +1,24 @@
-const Post = require('../models/post.model');
-const User = require('../models/user.model');
+import Post from '../models/post.model';
+import User from '../models/user.model';
 
-module.exports = {
+export default {
 
-  async createPost(args) {
-    try {
-      const user = await User.findById(args.userId);
-      return await Post.create(args);
-    } catch(err) {
-      console.log(err);
-      throw err;
-    }
+  createPost(args) {
+    return Promise.all([
+      User.findById(args.userId),
+      Post.create(args)
+    ]).then(([user, post]) => ({
+      ...post.get(),
+      user: user.get()
+    }));
   },
 
-  async getPosts() {
-    try {
-      return await Post.all();
-    } catch(err) {
-      console.log(err);
-      throw err;
-    }
+  getPosts() {
+    return Post.all();
   },
 
-  async getPost(id) {
-    try {
-      return await Post.findById(id);
-    } catch(err) {
-      console.log(err);
-      throw err;
-    }
+  getPost(id) {
+    return Post.findById(id);
   }
 
 };
