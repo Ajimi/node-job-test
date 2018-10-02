@@ -1,8 +1,6 @@
-const { 
-  ApolloServer, 
-  gql,
-  UserInputError,
-  ApolloError
+const {
+  ApolloServer,
+  gql
 } = require('apollo-server');
 
 const db = require('./lib/db');
@@ -38,7 +36,7 @@ const typeDefs = gql`
     posts: [Post]
     post(id: ID): Post
   }
- 
+
   type Mutation {
     createPost(title: String, content:String, userId: ID): Post
     commentPost(description: String, postId: ID, userId: ID): Comment
@@ -47,85 +45,39 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    async posts() {
-      try {
-        return await postApi.getPosts();
-      } catch(err) {
-        throw new ApolloError('Server error');
-      } 
-    },
+    posts: () => postApi.getPosts(),
 
-    async post(root, args) {
-      try {
-        return await postApi.getPost(args.id);
-      } catch(err) {
-        throw new ApolloError('Server error');
-      } 
-    },
-  },
-
-  Post: {
-    async user(root) {
-      try {
-        return await userApi.getUser(root.userId);        
-      } catch(err) {
-        throw new ApolloError('Server error');
-      } 
-    },
-
-    async comments(root) {
-      try {
-        return await commentsApi.getComments(root.id);
-      } catch(err) {
-        throw new ApolloError('Server error');
-      }
-    }
+    post: (root, args) => postApi.getPost(args.id)
   },
 
   Comment: {
-    async user(root) {
-      try {
-        return await userApi.getUser(root.userId);        
-      } catch(err) {
-        throw new ApolloError('Server error');
-      } 
+    user(root) {
+      return userApi.getUser(root.userId);
     }
   },
 
   Mutation: {
-    async createPost(root, args) {
-      try {
-        return await postApi.createPost(args);
-      } catch(err) {
-        throw new UserInputError('All fields are required');
-      }      
+    createPost(root, args) {
+      return postApi.createPost(args);
     },
 
-    async commentPost(root, args) {
-      try {
-        return await commentsApi.createComment(args);
-      } catch(err) {
-        throw new UserInputError('All fields are required');
-      }
+    commentPost(root, args) {
+      return commentsApi.createComment(args);
     }
   }
 };
 
-const start = async () => {
+const start = () => {
   const server = new ApolloServer({ typeDefs, resolvers });
 
   // setup database associations
   associations();
 
-  try {
-    await db.verifyConnection();
-    const { url } = await server.listen();
-    console.log(`🚀  Server ready at ${url}`);
-  } catch(err) {
-    console.log('error starting server: ', err);
-    throw err;
-  }
-  
+  db.verifyConnection()
+    .then(() => server.listen())
+    .then(({ url }) => console.log(`🚀  Server ready at ${url}`))
+    .catch(err => console.log('error starting server: ', err));
+
 }
 
 start();
