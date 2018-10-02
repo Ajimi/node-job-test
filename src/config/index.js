@@ -1,7 +1,5 @@
 import serverConfig from './server.config';
 
-console.log(serverConfig);
-
-module.exports = {
+export default {
   server: serverConfig
-};
+}
