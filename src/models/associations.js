@@ -7,11 +7,15 @@ export default () => {
   Post.belongsTo(User);
 
   User.sync();
-  Post.sync();
+
 
   // a comment belongs to a single user and a single post
   Comment.belongsTo(User);
   Comment.belongsTo(Post);
+
+  Post.hasMany(Comment);
+
+  Post.sync();
 
   Comment.sync();
 }
