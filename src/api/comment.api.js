@@ -7,8 +7,8 @@ export default {
     return Promise.all([
       User.findById(args.userId),
       Comment.create(args)
-    ]).then(([user, post]) => ({
-      ...post.get(),
+    ]).then(([user, comment]) => ({
+      ...comment.get(),
       user: user.get()
     }));
   },
