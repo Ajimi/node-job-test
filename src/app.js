@@ -8,7 +8,8 @@ import associations from './models/associations';
 
 import postApi from './api/post.api';
 import commentsApi from './api/comment.api';
-import userApi from './api/user.api';
+
+import selectionHelper from './utils/selectionHelper';
 
 const typeDefs = gql`
   type Post {
@@ -47,7 +48,9 @@ const resolvers = {
   Query: {
     posts: () => postApi.getPosts(),
 
-    post: (root, args) => postApi.getPost(args.id)
+    post: (root, args, ctx, info) => {
+      return postApi.getPost(args.id, selectionHelper.extractSelection(info));
+    }
   },
 
 

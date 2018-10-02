@@ -17,8 +17,11 @@ export default {
     return Post.all({include: ['user', 'comments']});
   },
 
-  getPost(id) {
-    return Post.findById(id, {include: ['user', 'comments']});
+  getPost(id, selection) {
+    return Post.findById(id, {
+      attributes: selection.selections,
+      include: selection.joins
+    });
   }
 
 };
