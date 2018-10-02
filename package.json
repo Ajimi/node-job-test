@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "babel-watch app.js"
+    "start": "node dist/app.js",
+    "dev": "babel-watch src/app.js",
+    "build": "babel -d dist src -s"
   },
   "keywords": [],
   "author": "",
