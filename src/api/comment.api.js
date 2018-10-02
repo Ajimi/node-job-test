@@ -11,10 +11,5 @@ export default {
       ...comment.get(),
       user: user.get()
     }));
-  },
-
-  getComments(postId) {
-    return Comment.findAll({ where: { postId: postId } });
   }
-
 }
