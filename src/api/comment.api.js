@@ -1,23 +1,13 @@
-const Comment = require('../models/comment.model');
+import Comment from '../models/comment.model';
 
-module.exports = {
+export default {
 
-  async createComment(args) {
-    try {
-      return await Comment.create(args);
-    } catch(err) {
-      console.log(err);
-      throw err;
-    } 
+  createComment(args) {
+    return Comment.create(args);
   },
 
-  async getComments(postId) {
-    try {
-      return await Comment.findAll({ where: { postId: postId } });
-    } catch(err) {
-      console.log(err);
-      throw err;
-    }
+  getComments(postId) {
+    return Comment.findAll({ where: { postId: postId } });
   }
 
 }
