@@ -3,13 +3,13 @@ import User from '../models/user.model';
 
 export default {
 
-  createComment(args) {
-    return Promise.all([
+  createComment : args =>
+    Promise.all([
       User.findById(args.userId),
       Comment.create(args)
     ]).then(([user, comment]) => ({
       ...comment.get(),
       user: user.get()
-    }));
-  }
+    }))
+
 }
