@@ -1,5 +1,5 @@
 const env = process.env;
-const nodeEnv = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+const nodeEnv = env.NODE_ENV === 'production' ? 'production' : 'development';
 
 const config = {
   development: {
